@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" strict="true">
+
+    <Properties>
+        <!-- 本地开发时这个路径替换成自己的本地路径 -->
+        <Property name="project.name">control-qps-server</Property>
+        <Property name="local.logging.path">logs</Property>
+        <Property name="logging.file.path">${local.logging.path}/${project.name}</Property>
+        <Property name="action.file.path">${logging.file.path}</Property>
+        <Property name="logging.file.name">${sys:logging.file.path}/${project.name}</Property>
+        <Property name="logging.file.warn.name">${sys:logging.file.path}/${project.name}-warn</Property>
+        <Property name="logging.file.error.name">${sys:logging.file.path}/${project.name}-error</Property>
+        <!-- <Property name="logging.file.monitor.name">${sys:logging.file.path}/monitor.log</Property> -->
+        <Property name="layout">%d %p [%t] %c{10}:%M:%L %m%n</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${layout}" />
+        </Console>
+
+        <RollingRandomAccessFile name="RollingRandomAccessFile"
+                                 immediateFlush="true" fileName="${logging.file.name}.log"
+                                 filePattern="${logging.file.name}-%d{yyyy-MM-dd-HH}.log">
+            <PatternLayout pattern="${layout}" />
+            <ThresholdFilter level="debug" />
+            <TimeBasedTriggeringPolicy />
+        </RollingRandomAccessFile>
+
+        <RollingRandomAccessFile name="RollingRandomAccessFileWarn"
+                                 immediateFlush="true" fileName="${logging.file.warn.name}.log"
+                                 filePattern="${logging.file.warn.name}-%d{yyyy-MM-dd-HH}.log">
+            <PatternLayout pattern="${layout}" />
+            <ThresholdFilter level="warn" />
+            <TimeBasedTriggeringPolicy />
+        </RollingRandomAccessFile>
+
+        <RollingRandomAccessFile name="RollingRandomAccessFileError"
+                                 immediateFlush="true" fileName="${logging.file.error.name}.log"
+                                 filePattern="${logging.file.error.name}-%d{yyyy-MM-dd-HH}.log">
+            <PatternLayout pattern="${layout}" />
+            <ThresholdFilter level="error" />
+            <TimeBasedTriggeringPolicy />
+        </RollingRandomAccessFile>
+    </Appenders>
+
+    <Loggers>
+
+        <Logger name="com.showjoy" level="debug" />
+
+        <Root level="info">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="RollingRandomAccessFile" />
+            <AppenderRef ref="RollingRandomAccessFileWarn" />
+            <AppenderRef ref="RollingRandomAccessFileError" />
+        </Root>
+
+    </Loggers>
+</Configuration>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.showjoy.qps.dao.NginxHostDao">
+    <resultMap id="BaseResultMap" type="com.showjoy.qps.model.NginxHost">
+        <result column="id" property="id" jdbcType="INTEGER" />
+        <result column="NginxName" property="NginxName" jdbcType="VARCHAR" />
+        <result column="PrivateIp" property="PrivateIp" jdbcType="VARCHAR" />
+        <result column="Env" property="Env" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="selectNginxIp" resultMap="BaseResultMap">
+        select *
+        from gray_nginx_server_info
+        where Env = #{Env,jdbcType=VARCHAR}
+    </select>
+
+    <!-- 为运维平台测试打包的变更发现 commit b-->
+</mapper>

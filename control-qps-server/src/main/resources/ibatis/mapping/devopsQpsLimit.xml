@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.showjoy.qps.dao.QpsLimitDao">
+    <resultMap id="BaseResultMap" type="com.showjoy.qps.model.QpsLimit">
+        <result column="id" property="id" jdbcType="INTEGER" />
+        <result column="url" property="url" jdbcType="VARCHAR" />
+        <result column="limitqps" property="limitqps" jdbcType="INTEGER" />
+        <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <insert id="insert">
+        insert into devops_qps_limit
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="url != null">
+                url,
+            </if>
+            <if test="limitqps != null">
+                limitqps,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="url != null">
+                #{url,jdbcType=BIGINT},
+            </if>
+            <if test="limitqps != null">
+                #{limitqps,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <!--
+    <insert id="insertBatch" useGeneratedKeys="false" parameterType="java.util.List">
+        insert into trade_order_item
+        (ORDER_NUMBER,QUANTITY,ITEM_NAME,SKU_ID,IMAGE,ORIGINAL_PRICE,BUYED_PRICE,ITEM_TYPE,ACTIVITY_TYPE,IS_HAITAO,SUPPLIER_ID,TAX_PRICE,NEED_IDCARD,POST_FEE)
+        values
+        <foreach collection="list" item="item" index="index"
+                 separator=",">
+            (#{item.orderNumber},#{item.quantity},#{item.name},#{item.skuId},#{item.image},#{item.originalPrice},#{item.buyedPrice},#{item.type},#{item.activityType},#{item.isHaitao},#{item.supplierId},#{item.taxPrice},#{item.needIdcardType},#{item.postFee})
+        </foreach>
+    </insert>
+    -->
+
+    <update id="updateQps">
+        update devops_qps_limit
+        <set>
+            <if test="limitqps != null">
+                limitqps = #{limitqps,jdbcType=INTEGER},
+            </if>
+        </set>
+        where url = #{url,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectByUrl" resultMap="BaseResultMap">
+        select *
+        from devops_qps_limit
+        where
+        url =
+        #{url}
+    </select>
+
+    <delete id="deleteByUrl">
+        delete from
+        devops_qps_limit
+        where url = #{url,jdbcType=VARCHAR}
+    </delete>
+</mapper>
